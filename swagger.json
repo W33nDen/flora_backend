@@ -1,0 +1,283 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Flora Backend API",
+    "description": "REST API for Flora flower shop. Provides endpoints for managing flowers, categories, and orders.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "Uzhvenko Denys"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local development server"
+    }
+  ],
+  "paths": {
+    "/api/flowers": {
+      "get": {
+        "tags": ["Flowers"],
+        "summary": "Get list of flowers",
+        "description": "Returns a list of flowers with optional filtering, searching, sorting, and pagination.",
+        "parameters": [
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Filter by category",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["top", "standart"]
+            }
+          },
+          {
+            "name": "q",
+            "in": "query",
+            "description": "Search query (searches in title and description)",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "maxLength": 100
+            }
+          },
+          {
+            "name": "_sort",
+            "in": "query",
+            "description": "Sort field. Prefix with '-' for descending order.",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "enum": ["price", "-price", "title", "-title"]
+            }
+          },
+          {
+            "name": "_page",
+            "in": "query",
+            "description": "Page number for pagination",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "_per_page",
+            "in": "query",
+            "description": "Number of items per page",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 4
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Flower" }
+                    },
+                    { "$ref": "#/components/schemas/PaginatedFlowers" }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid query parameters",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/flowers/{id}": {
+      "get": {
+        "tags": ["Flowers"],
+        "summary": "Get flower by ID",
+        "description": "Returns a single flower by its ID.",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Flower ID",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Flower" }
+              }
+            }
+          },
+          "404": {
+            "description": "Flower not found",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/categories": {
+      "get": {
+        "tags": ["Categories"],
+        "summary": "Get all categories",
+        "description": "Returns a list of unique flower categories.",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "example": ["top", "standart"]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/orders": {
+      "get": {
+        "tags": ["Orders"],
+        "summary": "Get all orders",
+        "description": "Returns all created orders (stored in memory).",
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": { "$ref": "#/components/schemas/Order" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": ["Orders"],
+        "summary": "Create a new order",
+        "description": "Creates a new order with customer details.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CreateOrderRequest" }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Order created successfully"
+                    },
+                    "order": { "$ref": "#/components/schemas/Order" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/Error" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Flower": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "img": { "type": "string", "example": "./images/flowers/68498236a1003120786.png" },
+          "title": { "type": "string", "example": "Midnight Garden" },
+          "desc": { "type": "string", "example": "A spellbinding bouquet..." },
+          "price": { "type": "number", "example": 98 },
+          "category": { "type": "string", "enum": ["top", "standart"], "example": "top" }
+        }
+      },
+      "PaginatedFlowers": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Flower" }
+          },
+          "first": { "type": "integer", "example": 1 },
+          "prev": { "type": "integer", "nullable": true, "example": null },
+          "next": { "type": "integer", "nullable": true, "example": 2 },
+          "last": { "type": "integer", "example": 4 },
+          "pages": { "type": "integer", "example": 4 },
+          "items": { "type": "integer", "example": 16 }
+        }
+      },
+      "CreateOrderRequest": {
+        "type": "object",
+        "required": ["name", "phone", "email"],
+        "properties": {
+          "name": { "type": "string", "minLength": 2, "maxLength": 50, "example": "John Doe" },
+          "phone": { "type": "string", "example": "+380991234567" },
+          "email": { "type": "string", "format": "email", "example": "john@example.com" },
+          "comment": { "type": "string", "maxLength": 500, "example": "Please deliver before 5pm" }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "example": 1 },
+          "name": { "type": "string", "example": "John Doe" },
+          "phone": { "type": "string", "example": "+380991234567" },
+          "email": { "type": "string", "example": "john@example.com" },
+          "comment": { "type": "string", "example": "Please deliver before 5pm" },
+          "createdAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": { "type": "string", "example": "Error description" }
+        }
+      }
+    }
+  }
+}
