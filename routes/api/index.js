@@ -1,9 +1,9 @@
-const flowersRouter = require("./flowersRouter");
+const bouquetsRouter = require("./bouquetsRouter");
 const categoriesRouter = require("./categoriesRouter");
 const ordersRouter = require("./ordersRouter");
 
 module.exports = {
-	flowersRouter,
+	bouquetsRouter,
 	categoriesRouter,
 	ordersRouter,
 };

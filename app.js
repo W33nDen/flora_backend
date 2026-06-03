@@ -4,7 +4,7 @@ const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerDocument = require("./swagger.json");
 const {
-	flowersRouter,
+	bouquetsRouter,
 	categoriesRouter,
 	ordersRouter,
 } = require("./routes/api");
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use(express.static("public"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-app.use("/api/flowers", flowersRouter);
+app.use("/api/bouquets", bouquetsRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/orders", ordersRouter);
 

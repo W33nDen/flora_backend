@@ -1,9 +1,9 @@
-const flowers = require("./flowersController");
+const bouquets = require("./bouquetsController");
 const categories = require("./categoriesController");
 const orders = require("./ordersController");
 
 module.exports = {
-	flowers,
+	bouquets,
 	categories,
 	orders,
 };

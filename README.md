@@ -4,12 +4,14 @@ Backend REST API для проєкту квіткового магазину **F
 
 ## 📋 Опис
 
-Серверний застосунок на Node.js (Express), що обслуговує REST API для фронтенд-частини проєкту Flora. Надає ендпоінти для отримання списку квітів з фільтрацією, пошуком, сортуванням та пагінацією.
+Серверний застосунок на Node.js (Express), що обслуговує REST API для фронтенд-частини проєкту Flora. Використовує **PostgreSQL** базу даних через **Prisma ORM** для зберігання та управління колекцією букетів. Підтримує повний CRUD, пошук, сортування, пагінацію та управління статусом "обране".
 
 ## 🛠 Технології
 
 - **Node.js** — середовище виконання
 - **Express** — веб-фреймворк
+- **Prisma ORM** — ORM для роботи з PostgreSQL
+- **PostgreSQL** — реляційна база даних (Render Cloud)
 - **Joi** — валідація запитів
 - **Morgan** — HTTP-логування
 - **CORS** — підтримка крос-доменних запитів
@@ -30,7 +32,7 @@ Backend REST API для проєкту квіткового магазину **F
 git clone https://github.com/W33nDen/flora_backend.git
 cd flora_backend
 
-# Встановити залежності
+# Встановити залежності (автоматично генерує Prisma Client)
 npm install
 ```
 
@@ -41,6 +43,17 @@ npm install
 ```env
 PORT=3000
 NODE_ENV=development
+DATABASE_URL=postgresql://user:password@host:5432/dbname
+```
+
+### Налаштування бази даних
+
+```bash
+# Синхронізувати схему Prisma з базою даних
+npx prisma db push
+
+# Заповнити базу початковими даними
+npm run seed
 ```
 
 ### Запуск
@@ -55,22 +68,32 @@ npm start
 
 Сервер запуститься на `http://localhost:3000`
 
+При успішному підключенні до БД у консолі з'явиться:
+```
+Database connection successful
+Server is running. Use our API on port: 3000
+```
+
 ## 📡 API Ендпоінти
 
-### Квіти
+### Букети (CRUD)
 
 | Метод | Шлях | Опис |
 |-------|------|------|
-| `GET` | `/api/flowers` | Отримати список квітів |
-| `GET` | `/api/flowers/:id` | Отримати квітку за ID |
+| `GET` | `/api/bouquets` | Отримати список букетів |
+| `GET` | `/api/bouquets/:id` | Отримати букет за ID |
+| `POST` | `/api/bouquets` | Створити новий букет |
+| `PUT` | `/api/bouquets/:id` | Оновити букет |
+| `DELETE` | `/api/bouquets/:id` | Видалити букет |
+| `PATCH` | `/api/bouquets/:bouquetId/favorite` | Оновити статус "обране" |
 
-#### Параметри запиту для `GET /api/flowers`
+#### Параметри запиту для `GET /api/bouquets`
 
 | Параметр | Тип | Опис |
 |----------|-----|------|
-| `category` | `string` | Фільтр за категорією: `top` або `standart` |
 | `q` | `string` | Пошук за назвою та описом |
-| `_sort` | `string` | Сортування: `price`, `-price`, `title`, `-title` |
+| `favorite` | `boolean` | Фільтр за статусом "обране" |
+| `_sort` | `string` | Сортування: `title`, `-title`, `createdAt`, `-createdAt` |
 | `_page` | `number` | Номер сторінки |
 | `_per_page` | `number` | Кількість елементів на сторінці |
 
@@ -82,9 +105,17 @@ npm start
   "first": 1,
   "prev": null,
   "next": 2,
-  "last": 4,
-  "pages": 4,
-  "items": 16
+  "last": 5,
+  "pages": 5,
+  "items": 20
+}
+```
+
+#### Тіло запиту `PATCH /api/bouquets/:bouquetId/favorite`
+
+```json
+{
+  "favorite": true
 }
 ```
 
@@ -101,17 +132,6 @@ npm start
 | `GET` | `/api/orders` | Отримати всі замовлення |
 | `POST` | `/api/orders` | Створити замовлення |
 
-#### Тіло запиту `POST /api/orders`
-
-```json
-{
-  "name": "John Doe",
-  "phone": "+380991234567",
-  "email": "john@example.com",
-  "comment": "Доставити до 17:00"
-}
-```
-
 ### Документація
 
 | Шлях | Опис |
@@ -122,23 +142,29 @@ npm start
 
 ```
 flora_backend/
-├── constants/          # Константи проєкту
-├── controllers/        # Бізнес-логіка API
-├── decorators/         # Обгортки для контролерів
-├── helpers/            # Утиліти (валідація, помилки, роутер)
-├── middlewares/        # Проміжні обробники
-├── models/             # Моделі даних
-├── routes/api/         # HTTP-маршрути
-├── schemas/            # Joi-схеми валідації
-├── scripts/            # Скрипти автоматизації
-├── public/             # Статичні файли (зображення)
-├── .env                # Змінні оточення
-├── app.js              # Ініціалізація Express-додатку
-├── server.js           # Точка запуску сервера
-├── envConfigs.js       # Конфігурація середовища
-├── db.json             # База даних (JSON)
-├── swagger.json        # OpenAPI документація
-└── package.json        # Залежності та скрипти
+├── prisma/
+│   └── schema.prisma       # Prisma-схема (модель Bouquet)
+├── db/
+│   └── prismaClient.js     # Singleton PrismaClient
+├── constants/               # Константи проєкту
+├── controllers/             # Бізнес-логіка API (CRUD)
+├── decorators/              # Обгортки для контролерів (ctrlWrapper)
+├── helpers/                 # Утиліти (валідація, помилки, роутер)
+├── middlewares/              # Проміжні обробники
+├── models/                  # Моделі даних (Flower — legacy)
+├── routes/api/              # HTTP-маршрути
+├── schemas/                 # Joi-схеми валідації
+├── scripts/
+│   └── seed.js              # Скрипт заповнення БД
+├── public/                  # Статичні файли (зображення)
+├── .env                     # Змінні оточення (не в репозиторії)
+├── prisma.config.ts         # Конфігурація Prisma (підключення до БД)
+├── app.js                   # Ініціалізація Express-додатку
+├── server.js                # Точка запуску сервера
+├── envConfigs.js            # Конфігурація середовища
+├── db.json                  # Початкові дані для seed
+├── swagger.json             # OpenAPI документація
+└── package.json             # Залежності та скрипти
 ```
 
 ## 👤 Автор
