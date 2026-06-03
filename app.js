@@ -20,6 +20,7 @@ app.use(express.static("public"));
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/bouquets", bouquetsRouter);
+app.use("/api/flowers", bouquetsRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/orders", ordersRouter);
 

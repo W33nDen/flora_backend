@@ -4,15 +4,37 @@ const { ctrlWrapper } = require("../decorators");
 const { DEFAULT_PAGE, DEFAULT_PER_PAGE } = require("../constants");
 
 /**
+ * Maps PostgreSQL database fields to the format expected by the frontend.
+ * - photo -> img
+ * - description -> desc
+ */
+const mapBouquet = (b) => {
+	if (!b) return b;
+	if (Array.isArray(b)) {
+		return b.map(mapBouquet);
+	}
+	return {
+		...b,
+		img: b.photo,
+		desc: b.description,
+	};
+};
+
+/**
  * GET /api/bouquets
- * Supports query params: q, favorite, _sort, _page, _per_page
+ * Supports query params: q, category, favorite, _sort, _page, _per_page
  * Returns paginated response when _page is provided, otherwise returns all matching bouquets.
  */
 const getBouquetsList = ctrlWrapper(async (req, res) => {
-	const { q, favorite, _sort, _page, _per_page } = req.query;
+	const { q, category, favorite, _sort, _page, _per_page } = req.query;
 
 	// Build Prisma where clause
 	const where = {};
+
+	// Filter by category
+	if (category) {
+		where.category = category;
+	}
 
 	// Filter by favorite
 	if (favorite !== undefined) {
@@ -32,7 +54,11 @@ const getBouquetsList = ctrlWrapper(async (req, res) => {
 	if (_sort) {
 		const isDesc = _sort.startsWith("-");
 		const field = isDesc ? _sort.substring(1) : _sort;
-		orderBy = { [field]: isDesc ? "desc" : "asc" };
+		// Map 'img' sort to 'photo' or 'desc' sort to 'description' if requested
+		let dbField = field;
+		if (field === "img") dbField = "photo";
+		if (field === "desc") dbField = "description";
+		orderBy = { [dbField]: isDesc ? "desc" : "asc" };
 	}
 
 	// Paginate (if _page is provided)
@@ -54,7 +80,7 @@ const getBouquetsList = ctrlWrapper(async (req, res) => {
 		const totalPages = Math.ceil(totalItems / perPage);
 
 		return res.json({
-			data,
+			data: mapBouquet(data),
 			first: 1,
 			prev: page > 1 ? page - 1 : null,
 			next: page < totalPages ? page + 1 : null,
@@ -66,7 +92,7 @@ const getBouquetsList = ctrlWrapper(async (req, res) => {
 
 	// No pagination — return all matching bouquets
 	const bouquets = await prisma.bouquet.findMany({ where, orderBy });
-	res.json(bouquets);
+	res.json(mapBouquet(bouquets));
 });
 
 /**
@@ -83,7 +109,7 @@ const getBouquetById = ctrlWrapper(async (req, res) => {
 		throw createError(404, "Not found");
 	}
 
-	res.json(bouquet);
+	res.json(mapBouquet(bouquet));
 });
 
 /**
@@ -94,7 +120,7 @@ const createBouquet = ctrlWrapper(async (req, res) => {
 	const bouquet = await prisma.bouquet.create({
 		data: req.body,
 	});
-	res.status(201).json(bouquet);
+	res.status(201).json(mapBouquet(bouquet));
 });
 
 /**
@@ -117,7 +143,7 @@ const updateBouquet = ctrlWrapper(async (req, res) => {
 		data: req.body,
 	});
 
-	res.json(bouquet);
+	res.json(mapBouquet(bouquet));
 });
 
 /**
@@ -162,7 +188,7 @@ const updateStatusBouquet = ctrlWrapper(async (req, res) => {
 		data: { favorite: req.body.favorite },
 	});
 
-	res.json(bouquet);
+	res.json(mapBouquet(bouquet));
 });
 
 module.exports = {

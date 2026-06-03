@@ -31,6 +31,8 @@ async function seed() {
 			photo: f.img,
 			title: f.title,
 			description: f.desc,
+			price: Number(f.price),
+			category: f.category,
 			favorite: f.category === "top", // top sellers marked as favorites
 		}));
 

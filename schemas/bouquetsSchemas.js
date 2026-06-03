@@ -6,13 +6,14 @@ const Joi = require("joi");
  */
 const getBouquetsQuerySchema = Joi.object({
 	q: Joi.string().max(100).optional(),
+	category: Joi.string().optional(),
 	favorite: Joi.boolean().optional(),
 	_sort: Joi.string()
-		.pattern(/^-?(title|createdAt)$/)
+		.pattern(/^-?(title|createdAt|price)$/)
 		.optional()
 		.messages({
 			"string.pattern.base":
-				"_sort must be one of: title, createdAt, -title, -createdAt",
+				"_sort must be one of: title, createdAt, price, -title, -createdAt, -price",
 		}),
 	_page: Joi.number().integer().min(1).optional(),
 	_per_page: Joi.number().integer().min(1).max(50).optional(),
@@ -35,6 +36,8 @@ const createBouquetSchema = Joi.object({
 		"string.max": "Description must be at most 1000 characters",
 		"any.required": "Description is required",
 	}),
+	price: Joi.number().min(0).optional(),
+	category: Joi.string().optional(),
 	favorite: Joi.boolean().optional(),
 });
 
@@ -45,6 +48,8 @@ const updateBouquetSchema = Joi.object({
 	photo: Joi.string().optional(),
 	title: Joi.string().min(2).max(100).optional(),
 	description: Joi.string().min(10).max(1000).optional(),
+	price: Joi.number().min(0).optional(),
+	category: Joi.string().optional(),
 	favorite: Joi.boolean().optional(),
 })
 	.min(1)
