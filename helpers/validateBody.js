@@ -1,4 +1,4 @@
-const { createError } = require("./error");
+const HttpError = require("./HttpError");
 
 /**
  * Factory that returns an Express middleware validating req.body against a Joi schema.
@@ -7,12 +7,9 @@ const { createError } = require("./error");
  */
 const validateBody = (schema) => {
 	return (req, _, next) => {
-		const { error } = schema.validate(req.body, { abortEarly: false });
+		const { error } = schema.validate(req.body);
 		if (error) {
-			const message = error.details
-				.map((detail) => detail.message)
-				.join(", ");
-			return next(createError(400, message));
+			return next(HttpError(400, error.message));
 		}
 		next();
 	};

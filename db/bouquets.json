@@ -1,0 +1,162 @@
+[
+  {
+    "id": 1,
+    "photo": "./images/flowers/68498236a1003120786.png",
+    "title": "Midnight Garden",
+    "description": "A spellbinding bouquet of indigo delphiniums, silvery moonlit eucalyptus, and deep violet lisianthus. This enchanting arrangement evokes the mysterious beauty of a midnight garden under starlit skies.",
+    "price": 98,
+    "favourite": true
+  },
+  {
+    "id": 2,
+    "photo": "./images/flowers/68498236a1003120787.png",
+    "title": "Sunlit Italian Meadow",
+    "description": "Capture the golden warmth of Tuscany with a radiant bouquet of sunny chamomile, vivid wild poppies, blue cornflowers, and fragrant sprigs of Italian greenery. A breath of countryside bliss.",
+    "price": 62,
+    "favourite": true
+  },
+  {
+    "id": 3,
+    "photo": "./images/flowers/68498236a1003120788.png",
+    "title": "Velvet Twilight",
+    "description": "A sumptuous nocturne of velvety burgundy peonies, plum dahlias, and soft blue thistle, artfully woven with dusky foliage. This bouquet evokes the allure and mystery of evening's embrace.",
+    "price": 98,
+    "favourite": true
+  },
+  {
+    "id": 4,
+    "photo": "./images/flowers/68498236a1003120789.png",
+    "title": "Urban Jungle",
+    "description": "A striking collision of glossy monstera leaves and neon pink protea, accented with fresh orchids and vibrant bromeliads. This bold bouquet radiates modern city energy and tropical intensity",
+    "price": 98,
+    "favourite": false
+  },
+  {
+    "id": 5,
+    "photo": "./images/flowers/68498236a1003120790.png",
+    "title": "Cobalt Currentse",
+    "description": "Ride the waves with this striking bouquet of ocean-hued hydrangeas, deep blue delphiniums, and sculptural sea holly, evoking the tranquil majesty of the open sea.",
+    "price": 89,
+    "favourite": false
+  },
+  {
+    "id": 6,
+    "photo": "./images/flowers/68498236a1003120791.png",
+    "title": "Enchanted Garden",
+    "description": "A vibrant cascade of fuchsia orchids, peonies, and wild clematis entwined with lush, leafy vines. This bouquet evokes the untamed beauty and intrigue of a secret garden getaway.",
+    "price": 40,
+    "favourite": false
+  },
+  {
+    "id": 7,
+    "photo": "./images/flowers/68498236a1003120792.png",
+    "title": "Luminous Chartreuse",
+    "description": "Brilliant chartreuse cymbidium orchids and gossamer hydrangea shine boldly among a sea of deep purple anemones and midnight lisianthus. An electrifying bouquet full of energy and aristocratic allure.",
+    "price": 102,
+    "favourite": false
+  },
+  {
+    "id": 8,
+    "photo": "./images/flowers/68498236a1003120793.png",
+    "title": "Woodland Whimsy",
+    "description": "A magical bouquet featuring petite white spray roses, dainty waxflowers, vibrant moss, and enchanting faux mushrooms, evoking the enchanting realm of woodland sprites and secret forest clearings.",
+    "price": 78,
+    "favourite": false
+  },
+  {
+    "id": 9,
+    "photo": "./images/flowers/68498236a1003120794.png",
+    "title": "Enchanted Lunar Landscape",
+    "description": "A celestial bouquet of snowy white peonies, silvery brunia, pale blue hydrangea, and shimmering eucalyptus creates a dreamscape worthy of moonlit nights and enchanted wishes.",
+    "price": 98,
+    "favourite": false
+  },
+  {
+    "id": 10,
+    "photo": "./images/flowers/68498236a1003120795.png",
+    "title": "Monochrome Minimalism",
+    "description": "A striking interplay of crisp white orchids, black calla lilies, and sculptural anthurium, this bouquet transforms the essence of modern art into a bold, graphic floral statement.",
+    "price": 92,
+    "favourite": false
+  },
+  {
+    "id": 11,
+    "photo": "./images/flowers/68498236a1003120796.png",
+    "title": "Japandi Serenity",
+    "description": "A tranquil composition of creamy magnolia blooms and artfully arranged linear branches, accented with soft greenery. This bouquet embodies minimalism and calm, inspired by the refined Japandi aesthetic.",
+    "price": 88,
+    "favourite": false
+  },
+  {
+    "id": 12,
+    "photo": "./images/flowers/68498236a1003120797.png",
+    "title": "Futurist Chrome",
+    "description": "A strikingly modern arrangement featuring gleaming metallic-silver leaves, electric blue anthuriums, and sculptural white orchids—evoking avant-garde elegance and the bold allure of tomorrow.",
+    "price": 110,
+    "favourite": false
+  },
+  {
+    "id": 13,
+    "photo": "./images/flowers/68498236a1003120798.png",
+    "title": "Golden Hour",
+    "description": "Glowing amber roses and sunlit wheat spikes mingle with soft golden ranunculus and textured grasses, capturing the warmth and glow of magic hour in an elegant, sun-kissed bouquet.",
+    "price": 79,
+    "favourite": false
+  },
+  {
+    "id": 14,
+    "photo": "./images/flowers/68498236a1003120799.png",
+    "title": "Quiet Nostalgia",
+    "description": "Soft, faded pink garden roses and blush ranunculus mingle with airy sprays of lacy Queen Anne's lace, creating a tender bouquet that gently evokes wistful, vintage memories.",
+    "price": 78,
+    "favourite": false
+  },
+  {
+    "id": 15,
+    "photo": "./images/flowers/68498236a1003120800.png",
+    "title": "Sun-Drenched Desert",
+    "description": "Capture the spirit of arid elegance with ochre garden roses, sculptural succulents, and textured cacti accents, evoking endless sunbeams and the rugged beauty of the desert in bloom.",
+    "price": 89,
+    "favourite": false
+  },
+  {
+    "id": 16,
+    "photo": "./images/flowers/68498236a1003120801.png",
+    "title": "Chinoiserie Dreams",
+    "description": "A graceful fusion of delicate cherry blossoms, sapphire-hued hydrangeas, and porcelain blue delphiniums evokes the timeless elegance of hand-painted chinoiserie. A bouquet brimming with artful sophistication.",
+    "price": 98,
+    "favourite": false
+  },
+  {
+    "id": 17,
+    "photo": "./images/flowers/68498236a1003120802.png",
+    "title": "Retro Mod Bouquet",
+    "description": "A bold celebration of pop-art style, this bouquet features vibrant dahlias, striking graphic mums, and playful accents in electric pink, citrus orange, and lemon yellow. The ultimate statement piece.",
+    "price": 88,
+    "favourite": true
+  },
+  {
+    "id": 18,
+    "photo": "./images/flowers/68498236a1003120803.png",
+    "title": "Firelight Embrace",
+    "description": "Rich wine-hued peonies and smoldering copper foliage unite in this luxurious bouquet, echoing the golden glow and warmth of a firelit evening. Bold, romantic, utterly captivating.",
+    "price": 102,
+    "favourite": true
+  },
+  {
+    "id": 19,
+    "photo": "./images/flowers/68498236a1003120804.png",
+    "title": "Renaissance Tapestry",
+    "description": "An opulent bouquet of velvety red garden roses, burgundy peonies, and golden-hued ranunculus, elegantly wrapped with gold brocade ribbon—evoking the grandeur and artistry of a Renaissance masterpiece.",
+    "price": 110,
+    "favourite": false
+  },
+  {
+    "id": 20,
+    "photo": "./images/flowers/68498236a1003120805.png",
+    "title": "Winter Solstice",
+    "description": "A luminous bouquet of icy blue hydrangeas, white roses, and silvery frosted pine, evoking the hushed elegance and shimmering calm of the longest winter night.",
+    "price": 92,
+    "favourite": false
+  }
+]

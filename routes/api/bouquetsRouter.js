@@ -1,18 +1,16 @@
-const { bouquets: c } = require("../../controllers");
-const { createRouter, validateQuery, validateBody } = require("../../helpers");
+const { bouquetsControllers: c } = require("../../controllers");
+const { createRouter, validateBody } = require("../../helpers");
 const {
-	getBouquetsQuerySchema,
 	createBouquetSchema,
 	updateBouquetSchema,
-	updateFavoriteSchema,
 } = require("../../schemas");
 
 const bouquetsRouterOptions = [
 	{
 		method: "get",
 		route: "/",
-		middlewares: [validateQuery(getBouquetsQuerySchema)],
-		controller: c.getBouquetsList,
+		middlewares: null,
+		controller: c.listBouquets,
 	},
 	{
 		method: "get",
@@ -24,7 +22,7 @@ const bouquetsRouterOptions = [
 		method: "post",
 		route: "/",
 		middlewares: [validateBody(createBouquetSchema)],
-		controller: c.createBouquet,
+		controller: c.addBouquet,
 	},
 	{
 		method: "put",
@@ -36,13 +34,7 @@ const bouquetsRouterOptions = [
 		method: "delete",
 		route: "/:id",
 		middlewares: null,
-		controller: c.deleteBouquet,
-	},
-	{
-		method: "patch",
-		route: "/:bouquetId/favorite",
-		middlewares: [validateBody(updateFavoriteSchema)],
-		controller: c.updateStatusBouquet,
+		controller: c.removeBouquet,
 	},
 ];
 
